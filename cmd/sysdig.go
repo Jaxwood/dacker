@@ -16,11 +16,11 @@ import (
 func main() {
 	ctx := context.Background()
 
-	tenantId := os.Getenv("tenant-id")
-	clientId := os.Getenv("client-id")
-	clientSecret := os.Getenv("client-secret")
-	keyvaultURL := os.Getenv("vault-uri")
-	sysdigUri := os.Getenv("sysdig-url")
+	tenantId := os.Getenv("TENANTID")
+	clientId := os.Getenv("CLIENTID")
+	clientSecret := os.Getenv("CLIENTSECRET")
+	keyvaultURL := os.Getenv("VAULTURI")
+	sysdigUri := os.Getenv("SYSDIGURI")
 	ci := os.Getenv("CI")
 
     secretName := "sysdig-api-token"
