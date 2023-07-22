@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Dagger
+      run: go get dagger.io/dagger@latest cloud.google.com/go/run/apiv2
+
+    - name: Release and deploy with Dagger
+      run: go run cmd/sysdig.go nginx:1.23
+      env:
+        tenant-id: ${{ secrets.TENANTID }}
+        client-id: ${{ secrets.CLIENTID }}
+        vault-uri: ${{ secrets.VAULTURI }}
+        sysdig-url: ${{ secrets.SYSDIGURI }}
+
