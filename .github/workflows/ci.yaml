@@ -19,8 +19,10 @@ jobs:
     - name: Release and deploy with Dagger
       run: go run cmd/sysdig.go nginx:1.23
       env:
-        tenant-id: ${{ secrets.TENANTID }}
-        client-id: ${{ secrets.CLIENTID }}
-        vault-uri: ${{ secrets.VAULTURI }}
-        sysdig-url: ${{ secrets.SYSDIGURI }}
+        CI: ${{ secrets.CI }}
+        TENANTID: ${{ secrets.TENANTID }}
+        CLIENTID: ${{ secrets.CLIENTID }}
+        CLIENTSECRET: ${{ secrets.CLIENTSECRET }}
+        VAULTURI: ${{ secrets.VAULTURI }}
+        SYSDIGURI: ${{ secrets.SYSDIGURI }}
 

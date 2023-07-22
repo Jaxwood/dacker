@@ -6,8 +6,8 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
 
 	"dagger.io/dagger"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -16,31 +16,31 @@ import (
 func main() {
 	ctx := context.Background()
 
+	ci := os.Getenv("CI")
 	tenantId := os.Getenv("TENANTID")
 	clientId := os.Getenv("CLIENTID")
 	clientSecret := os.Getenv("CLIENTSECRET")
 	keyvaultURL := os.Getenv("VAULTURI")
 	sysdigUri := os.Getenv("SYSDIGURI")
-	ci := os.Getenv("CI")
 
-    secretName := "sysdig-api-token"
+	secretName := "sysdig-api-token"
 	image := os.Args[1]
 
-    var cred azcore.TokenCredential
-    if b, err := strconv.ParseBool(ci); b {
-        cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
-        if err != nil {
-            log.Fatal(err)
-        }
-    } else {
-        cred, err = azidentity.NewInteractiveBrowserCredential(&azidentity.InteractiveBrowserCredentialOptions{
-            TenantID: tenantId,
-            ClientID: clientId,
-        })
-        if err != nil {
-            log.Fatal(err)
-        }
-    }
+	var cred azcore.TokenCredential
+	if b, err := strconv.ParseBool(ci); b {
+		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		cred, err = azidentity.NewInteractiveBrowserCredential(&azidentity.InteractiveBrowserCredentialOptions{
+			TenantID: tenantId,
+			ClientID: clientId,
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 
 	azclient, err := azsecrets.NewClient(keyvaultURL, cred, nil)
 	if err != nil {
